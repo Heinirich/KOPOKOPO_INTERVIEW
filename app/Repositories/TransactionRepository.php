@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
+use Illuminate\Support\Str;
 use App\Interfaces\TransactionRepositoryInterface;
 
 class TransactionRepository implements TransactionRepositoryInterface
@@ -14,6 +15,12 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function create(array $data)
     {
+        // Create UUID if not provided
+
+        if (!isset($data['account_id'])) {
+            $data['account_id'] = Str::uuid();
+        }
+
         return Transaction::create($data);
     }
 

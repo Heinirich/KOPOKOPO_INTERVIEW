@@ -69,4 +69,16 @@ class TransactionController extends Controller
 
         return response()->json($createdTransaction, 201);
     }
+
+
+    public function show($transaction_id)
+    {
+        $transaction = $this->transactionRepository->findByTransactionID($transaction_id);
+
+        if (!$transaction) {
+            return response()->json(['error' => 'Transaction not found.'], 404);
+        }
+
+        return response()->json($transaction);
+    }
 }

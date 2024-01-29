@@ -82,4 +82,15 @@ class TransactionController extends Controller
 
         return response()->json($transaction);
     }
+
+    public function showByAccount($account_id)
+    {
+        $transaction = $this->transactionRepository->findByAccountID($account_id);
+
+        if (!$transaction) {
+            return response()->json(['error' => 'Account not found.'], 404);
+        }
+
+        return response()->json($transaction);
+    }
 }

@@ -9,4 +9,6 @@ interface TransactionRepositoryInterface
     public function create(array $data);
 
     public function findByID($transaction_id);
+
+    public function findByAccountID($account_id);
 }

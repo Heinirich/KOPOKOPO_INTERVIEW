@@ -28,4 +28,9 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::find($transaction_id);
     }
+
+    public function findByAccountID($account_id)
+    {
+        return Transaction::where('account_id',$account_id)->first();
+    }
 }

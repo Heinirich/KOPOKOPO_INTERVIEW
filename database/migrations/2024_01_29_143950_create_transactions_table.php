@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            // database migration for transactions table 
+            // database migration for transactions table
             $table->id();
-            $table->string('account_id')->nullable();
+            $table->uuid('account_id')->nullable();
             $table->decimal('amount', 10, 2);
             $table->timestamps();
         });

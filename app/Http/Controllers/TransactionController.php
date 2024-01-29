@@ -38,7 +38,7 @@ class TransactionController extends Controller
         // Format response to OPENAPI format
         $formattedTransactions = $transactions->map(function ($transaction) {
             return [
-                'account_id' => base64_decode($transaction->account_id),
+                'account_id' => $transaction->account_id,
                 'amount' => $transaction->amount
             ];
         });

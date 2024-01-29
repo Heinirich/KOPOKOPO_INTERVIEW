@@ -8,5 +8,5 @@ interface TransactionRepositoryInterface
 
     public function create(array $data);
 
-    public function findByTransactionID($transaction_id);
+    public function findByID($transaction_id);
 }

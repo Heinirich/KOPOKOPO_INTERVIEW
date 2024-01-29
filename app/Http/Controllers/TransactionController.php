@@ -74,7 +74,7 @@ class TransactionController extends Controller
 
     public function show($transaction_id)
     {
-        $transaction = $this->transactionRepository->findByTransactionID($transaction_id);
+        $transaction = $this->transactionRepository->findByID($transaction_id);
 
         if (!$transaction) {
             return response()->json(['error' => 'Transaction not found.'], 404);

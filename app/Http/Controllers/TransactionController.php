@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TransactionRequest;
 use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
@@ -14,13 +15,58 @@ class TransactionController extends Controller
         $this->transactionRepository = $transactionRepository;
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/transactions",
+     *     summary="Retrieve transactions",
+     *     description="Retrieve a list of transactions",
+     *     @OA\Response(
+     *         response=200,
+     *         description="A list of transactions",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Transaction")
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
-        return $this->transactionRepository->getAll();
+        $transactions =  $this->transactionRepository->getAll();
+
+        // Format response to OPENAPI format
+        $formattedTransactions = $transactions->map(function ($transaction) {
+            return [
+                'account_id' => base64_decode($transaction->account_id),
+                'amount' => $transaction->amount
+            ];
+        });
+
+        return response()->json($formattedTransactions)
+            ->setStatusCode(200, "A list of transactions");
     }
 
-    public function store(Request $request)
+    /**
+     * @OA\Post(
+     *     path="/transactions",
+     *     summary="Create a new transaction",
+     *     description="Create a new transaction entry",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Created",
+     *         @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *     )
+     * )
+     */
+    public function store(TransactionRequest $request)
     {
-        return $this->transactionRepository->create($request->all());
+        $createdTransaction = $this->transactionRepository->create($request->all());
+
+        return response()->json($createdTransaction, 201);
     }
 }

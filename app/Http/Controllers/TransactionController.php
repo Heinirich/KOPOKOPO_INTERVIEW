@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TransactionRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
@@ -74,6 +75,17 @@ class TransactionController extends Controller
 
     public function show($transaction_id)
     {
+
+        // Validate transaction ID
+        $validator = Validator::make(['transaction_id' => $transaction_id], [
+            'transaction_id' => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([])
+                ->setStatusCode(400, "transaction_id missing or has incorrect type.");
+        }
+
         $transaction = $this->transactionRepository->findByID($transaction_id);
 
         if (!$transaction) {
@@ -85,6 +97,16 @@ class TransactionController extends Controller
 
     public function showByAccount($account_id)
     {
+        $validator = Validator::make(['account_id' => $account_id], [
+            'account_id' => 'required|string|uuid',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([])
+                ->setStatusCode(400, "account_id missing or has incorrect type.");
+        }
+
+
         $transaction = $this->transactionRepository->findByAccountID($account_id);
 
         if (!$transaction) {

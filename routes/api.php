@@ -19,6 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/ping', function () {
+    return response()->json("The service is up and running",200);
+});
+
 Route::get('/transactions', [TransactionController::class, 'index']);
 Route::post('/transactions', [TransactionController::class, 'store']);
 Route::get('/transactions/{transaction_id}', [TransactionController::class, 'show']);

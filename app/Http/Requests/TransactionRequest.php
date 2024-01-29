@@ -25,7 +25,7 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'account_id' => 'required|string',
+            'account_id' => 'string',
             'amount' => 'required|numeric',
         ];
     }

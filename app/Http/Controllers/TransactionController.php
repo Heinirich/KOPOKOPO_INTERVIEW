@@ -67,7 +67,8 @@ class TransactionController extends Controller
     {
         $createdTransaction = $this->transactionRepository->create($request->all());
 
-        return response()->json($createdTransaction, 201);
+        return response()->json($createdTransaction)
+            ->setStatusCode(201, "Transaction created");
     }
 
 
